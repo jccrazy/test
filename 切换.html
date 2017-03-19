@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript">
+            window.onload = function() {
+                var oDiv = document.getElementById('div1');
+                var oInput = document.getElementById('input1');
+
+                oInput.onclick = function() {
+                    var arr = oDiv.innerHTML.split(',');
+                    arr.push(arr[0]);
+                    arr.shift();
+                    oDiv.innerHTML = arr;
+                };
+            };
+        </script>
+    </head>
+    <body>
+        <h3>简单切换</h3>
+        <div id="div1">老铁,老狗,老板,老大</div>
+        <input type="button" value="没毛病" id="input1" />
+    </body>
+</html>

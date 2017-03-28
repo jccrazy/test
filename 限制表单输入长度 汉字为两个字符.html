@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>限制表单输入长度 汉字为两个字符</title>
+<meta name="auther" content="f7" />
+<script>
+
+function lengthLimit(elem, showElem, max){
+    var elem = document.getElementById(elem);
+    var showElem = document.getElementById(showElem);
+    var max = max || 50;// 最大限度字符，汉字按两个字符计算
+    
+    function getTextLength(str){// 获取字符串的长度 一个汉字为2个字符
+        return str.replace(/[^\x00-\xff]/g,"xx").length;
+    };
+    
+    // 监听textarea的内容变化
+    if(/msie (\d+\.\d)/i.test(navigator.userAgent) == true) {// 区分IE
+        elem.onpropertychange = textChange;
+    }else{
+        elem.addEventListener("input", textChange, false);
+    }
+    
+    function textChange(){// 内容变化时的处理
+        var text = elem.value;
+        var count = getTextLength(text);
+        
+        if(count > max){// 文字超出截断
+            for(var i=0; i<text.length; i++){
+                if(getTextLength(text.substr(0, i)) >= max){
+                    elem.value = text.substr(0, i);
+                    if(showElem) showElem.innerHTML = elem.value;// 显示输出结果
+                    break;
+                };
+            }
+        }else{
+            if(showElem) showElem.innerHTML = elem.value;// 显示输出结果
+        };
+        
+    };
+    
+    textChange();// 加载时先初始化
+};
+
+
+
+</script>
+
+</head>
+
+<body>
+<textarea name="textarea" id="commentText" style="width:500px; height:150px;"></textarea> 最多输入20个汉字
+<input type="button" value="JS添加内容" onclick="document.getElementById('commentText').value = '您想说的话！请输入您想说的'; lengthLimit('commentText', 'dsa', 40);" />
+<div id="dsa"></div>
+<script type="text/javascript">
+lengthLimit("commentText", "dsa", 40);
+</script>
+</body>
+</html>
